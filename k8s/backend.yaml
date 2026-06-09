@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: skillpulse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: dev7878/skillpulse-backend:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_PORT
+              value: "3306"
+            - name: PORT
+              value: "8080"  
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: skillpulse-crd
+                  key: MYSQL_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: skillpulse-crd
+                  key: MYSQL_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: skillpulse-crd
+                  key: MYSQL_DATABASE
+          resources:
+            requests:
+              cpu: 60m
+              memory: 32Mi
+            limits:
+              cpu: 70m
+              memory: 64Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+
+---
+
+kind: Service
+apiVersion: v1 
+metadata:
+  name: backend
+  namespace: skillpulse
+spec:
+  type: ClusterIP
+  selector:
+    app: backend 
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080 

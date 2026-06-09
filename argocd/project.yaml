@@ -1,0 +1,23 @@
+kind: AppProject
+apiVersion: argoproj.io/v1alpha
+metadata:
+  name: skiilpulse-project
+  namespace: argocd
+spec:
+  description: "This project for SkillPulse !!"
+  sourceRepos:
+    - https://github.com/dev9913/skillpulse.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: skillpulse
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: skillpulse-admin
+      description: "This role is given to Admin" 
+      policies:
+        - p, proj:skiilpulse-project:skillpulse-admin, applications, *, skiilpulse-project/*, allow   

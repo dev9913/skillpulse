@@ -1,0 +1,27 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ingress
+  namespace: skillpulse 
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: skillpulse.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend: 
+          service: 
+            name: frontend
+            port:
+              number: 80
+      - path: /health
+        pathType: Prefix
+        backend:  
+          service:
+            name: backend
+            port:
+              number: 8080
+          
+

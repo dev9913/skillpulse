@@ -1,0 +1,22 @@
+kind: Application
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: skillpulse
+  namespace: argocd
+spec:
+  project: skiilpulse-project
+  sourceRepo:
+    repoUrl: https://github.com/dev9913/skillpulse.git
+    targetRevision: main
+    path: k8s
+  destination:
+    server: https://kubernetes.default.svc 
+    namespace: skillpulse
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true    
+

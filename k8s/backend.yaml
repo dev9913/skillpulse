@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: dev7878/skillpulse-backend:1.0.0
+          image: dev7878/skillpulse-backend:2c7d8f775b27500aaa5ff988591cd58d5df4ffab
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -25,7 +25,7 @@ spec:
             - name: DB_PORT
               value: "3306"
             - name: PORT
-              value: "8080"  
+              value: "8080"
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -60,19 +60,21 @@ spec:
               port: 8080
             initialDelaySeconds: 2
             periodSeconds: 5
-
 ---
-
 kind: Service
-apiVersion: v1 
+apiVersion: v1
 metadata:
   name: backend
   namespace: skillpulse
 spec:
   type: ClusterIP
   selector:
-    app: backend 
+    app: backend
   ports:
     - name: http
       port: 8080
-      targetPort: 8080 
+      targetPort: 8080
+  template:
+    spec:
+      containers:
+        - image: dev7878/skillpulse-backend:2c7d8f775b27500aaa5ff988591cd58d5df4ffab

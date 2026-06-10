@@ -30,11 +30,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # - name: Update K8S Manifest
+      #   run: |
+      #    yq e -i '.spec.template.spec.containers[0].image |= sub(":.*"; ":" + strenv(IMAGE_TAG))' \
+      #    k8s/${{ matrix.service }}.yaml 
+
       - name: Update K8S Manifest
         run: |
-         yq e -i '.spec.template.spec.containers[0].image |= sub(":.*"; ":" + strenv(IMAGE_TAG))' \
-         k8s/${{ matrix.service }}.yaml 
-
+          yq -i '.spec.template.spec.containers[0].image = "dev7878/skillpulse-${{ matrix.service }}:'"$IMAGE_TAG"'"' \
+          k8s/${{ matrix.service }}.yaml
+    
       - name: Configure Git
         run: |
           git config --global user.name ${GIT_USER}

@@ -51,9 +51,12 @@ jobs:
           git add k8s/${{ matrix.service }}.yaml
           git commit -m "Update ${{ matrix.service }} image to $IMAGE_TAG" || echo "No changes"
 
+      - name: Rebase Latest Main
+        run: |
+          git pull --rebase origin main
+    
       - name: Push Changes
         run: |
-          git pull origin main
           git push https://\${GIT_USER}:\${{ secrets.GIT_TOKEN }}@github.com/${GIT_USER}/skillpulse.git HEAD:main
           
   argocd:

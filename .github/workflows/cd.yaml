@@ -1,6 +1,7 @@
 name: SkillPulse-CD
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["SkillPulse-CI"]
     types: [completed]

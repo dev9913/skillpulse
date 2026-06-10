@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: dev7878/skillpulse-backend:2c7d8f775b27500aaa5ff988591cd58d5df4ffab
+          image: dev7878/skillpulse-backend:d50b54d155a64d335c882f882efb5dcc9ba685b8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -77,4 +77,4 @@ spec:
   template:
     spec:
       containers:
-        - image: dev7878/skillpulse-backend:2c7d8f775b27500aaa5ff988591cd58d5df4ffab
+        - image: dev7878/skillpulse-backend:d50b54d155a64d335c882f882efb5dcc9ba685b8

@@ -9,7 +9,9 @@ RUN go mod tidy && CGO_ENABLED=0 GOOS=linux go build -o skillpulse .
 # Stage 2: Run
 FROM alpine:3.23
 
-RUN apk --no-cache add ca-certificates
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache ca-certificates
 
 WORKDIR /app
 

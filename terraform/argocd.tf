@@ -28,14 +28,14 @@ resource "helm_release" "argocd" {
 
 // Deploy Argocd Project 
 resource "kubectl_manifest" "argocd_project" {
-  yaml_body = file("${path.module}./argocd/project.yaml")
-  depends_on = [ helm_release.argocd ]
+  yaml_body  = file("${path.module}./argocd/project.yaml")
+  depends_on = [helm_release.argocd]
 }
 
 // Deploy Argocd Application
 resource "kubectl_manifest" "argocd_application" {
   yaml_body = file("${path.module}./argocd/application.yaml")
 
-  depends_on = [kubectl_manifest.argocd_project ]
+  depends_on = [kubectl_manifest.argocd_project]
 }
 
